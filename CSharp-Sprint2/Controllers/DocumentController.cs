@@ -1,90 +1,74 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CSharp_Sprint2.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Serialization;
+using System.Web.Http;
+using FromBodyAttribute = Microsoft.AspNetCore.Mvc.FromBodyAttribute;
+using HttpDeleteAttribute = Microsoft.AspNetCore.Mvc.HttpDeleteAttribute;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
+using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CSharp_Sprint2.Controllers
 {
-    public class DocumentController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DocumentController : ControllerBase
     {
-        private ILogger<DocumentController> _logger;
-
-        private DocumentController(ILogger<DocumentController> logger)
+        // GET: api/<DocumentController>
+        [HttpGet]
+        public IEnumerable<string> Get()
         {
-            _logger = logger;
-        }
-        
-        // GET: DocumentController
-        public ActionResult Index()
-        {
-            return View();
+            return new string[] { "value1", "value2" };
         }
 
-        // GET: DocumentController/Details/5
-        public ActionResult Details(int id)
+        // GET api/<DocumentController>/5
+        [HttpGet("{Id}")]
+        [HttpGet("{Name}")]
+        public string Get(int id)
         {
-            return View();
+            return "value";
         }
 
-        // GET: DocumentController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: DocumentController/Create
+        // POST api/<DocumentController>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public DocumentModel Post(DocumentModel model)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return model;
         }
 
-        // GET: DocumentController/Edit/5
-        public ActionResult Edit(int id)
+
+        // PUT api/<DocumentController>/5
+        /// <summary>
+        /// Adds a value to a database.
+        /// eventually this should connect to a Database, 
+        /// relational or otherwise
+        /// </summary>
+        /// <param name="id"></param>
+        [Microsoft.AspNetCore.Mvc.HttpPut("{Id,Name,Date,value,documentType,idDocument,currentState}")]
+        public IHttpActionResult Put(DocumentModel model)
         {
-            return View();
+            if (!ModelState.IsValid)
+                return (IHttpActionResult)BadRequest("Invalid data.");
+
+            return (IHttpActionResult)Ok();
         }
 
-        // POST: DocumentController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        // DELETE api/<DocumentController>/5
+        /// <summary>
+        /// Deletes the value from a database, 
+        /// eventually this should connect to a Database, 
+        /// relational or otherwise
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpDelete("{Id,Name,Date,value,documentType,idDocument,currentState}")]
+        public IHttpActionResult Delete(DocumentModel model)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            if (!ModelState.IsValid)
+                return (IHttpActionResult)BadRequest("Invalid data.");
 
-        // GET: DocumentController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: DocumentController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return (IHttpActionResult)Ok();
         }
     }
 }

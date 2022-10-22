@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace CSharp_Sprint2.Models
+namespace CSharp_Sprint2
 {
-    public class DocumentModel
+    public class Document
     {
         [Required]
         public string Id { get; set; }
